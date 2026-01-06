@@ -123,7 +123,7 @@ async function describeLogStreamWithRetry(
       return response;
     }
     if (attempt < maxRetries - 1) {
-      const delayMs = baseDelayMs * Math.pow(2, attempt);
+      const delayMs = baseDelayMs * (2 ** attempt);
       console.log(
         `Log stream not found, retrying in ${delayMs}ms (attempt ${
           attempt + 1

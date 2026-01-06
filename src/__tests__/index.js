@@ -210,7 +210,7 @@ describe("DescribeLogStreams exponential backoff", () => {
         `${__dirname}/logs/${logFile}`
       ).pipe(zlib.createGzip());
 
-      // AWS SDK Steam type
+      // AWS SDK Stream type
       const sdkStream = sdkStreamMixin(gzippedLogFileContents);
 
       // Mock the S3 getObject command to return the contents of the fake log file
@@ -286,7 +286,7 @@ describe("DescribeLogStreams exponential backoff", () => {
         `${__dirname}/logs/${logFile}`
       ).pipe(zlib.createGzip());
 
-      // AWS SDK Steam type
+      // AWS SDK Stream type
       const sdkStream = sdkStreamMixin(gzippedLogFileContents);
 
       // Mock the S3 getObject command
