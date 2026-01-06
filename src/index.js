@@ -108,6 +108,33 @@ async function unpackLogData(s3object) {
   });
 }
 
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function describeLogStreamWithRetry(
+  describeLogStreamsCommand,
+  maxRetries = 5,
+  baseDelayMs = 100
+) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const response = await cloudWatchLogs.send(describeLogStreamsCommand);
+    if (response.logStreams && response.logStreams.length > 0) {
+      return response;
+    }
+    if (attempt < maxRetries - 1) {
+      const delayMs = baseDelayMs * (2 ** attempt);
+      console.log(
+        `Log stream not found, retrying in ${delayMs}ms (attempt ${
+          attempt + 1
+        }/${maxRetries})`
+      );
+      await sleep(delayMs);
+    }
+  }
+  throw new Error("Log stream not found after retries");
+}
+
 async function getLogStreamSequenceToken(logGroupName, logStreamName) {
   console.log(`Checking Log Streams ${logGroupName}/${logStreamName}`);
   let currentStream;
@@ -127,7 +154,7 @@ async function getLogStreamSequenceToken(logGroupName, logStreamName) {
       logStreamName,
     });
     await cloudWatchLogs.send(createLogStreamCommand);
-    const cwlDescribeCreatedStream = await cloudWatchLogs.send(
+    const cwlDescribeCreatedStream = await describeLogStreamWithRetry(
       describeLogStreamsCommand
     );
     currentStream = cwlDescribeCreatedStream.logStreams[0];
