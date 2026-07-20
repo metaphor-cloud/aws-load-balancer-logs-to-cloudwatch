@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This repo is archived as AWS have added native [CloudWatch integration on Application Load Balancers (ALBs)](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-cloudwatch-logs.html) and [Network Load Balancers (NLBs)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-cloudwatch-logs.html).
+
 # AWS Load Balancer S3 Logs to CloudWatch Logs
 ![unit tests](https://github.com/rupertbg/aws-load-balancer-logs-to-cloudwatch/actions/workflows/tests.yml/badge.svg?branch=master)
 
